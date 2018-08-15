@@ -202,3 +202,83 @@ class Solution {
     }
     
 }
+
+
+/*
+ Method 3 : Using Manacher's algorithm O(n) time and 0(n) space
+ description of algo in detail can be found at : 
+ 1. https://tarokuriyama.com/projects/palindrome2.php
+ 2. https://algodast.quora.com/Manachar%E2%80%99s-Algorithm
+ 3. http://www.zrzahid.com/longest-palindromic-substring-in-linear-time/
+ Code listed below is referenced from : https://algs4.cs.princeton.edu/53substring/Manacher.java.html
+*/
+
+public class Solution {
+    private int[]  p;  // p[i] = length of longest palindromic substring of t, centered at i
+    private String s;  // original string
+    private char[] t;  // transformed string
+
+    void Manacher(String s) {
+        this.s = s;
+        preprocess();
+        p = new int[t.length];
+
+        int center = 0, right = 0;
+        for (int i = 1; i < t.length-1; i++) {
+            int mirror = 2*center - i;
+
+            if (right > i)
+                p[i] = Math.min(right - i, p[mirror]);
+ 
+            // attempt to expand palindrome centered at i
+            while (t[i + (1 + p[i])] == t[i - (1 + p[i])])
+                p[i]++;
+ 
+            // if palindrome centered at i expands past right,
+            // adjust center based on expanded palindrome.
+            if (i + p[i] > right) {
+                center = i;
+                right = i + p[i];
+            }
+        }
+      
+       return longestPalindromicSubstring();
+    }
+
+    // Transform s into t.
+    // For example, if s = "abba", then t = "$#a#b#b#a#@"
+    // the # are interleaved to avoid even/odd-length palindromes uniformly
+    // $ and @ are prepended and appended to each end to avoid bounds checking
+    private void preprocess() {
+        t = new char[s.length()*2 + 3];
+        t[0] = '$';
+        t[s.length()*2 + 2] = '@';
+        for (int i = 0; i < s.length(); i++) {
+            t[2*i + 1] = '#';
+            t[2*i + 2] = s.charAt(i);
+        }
+        t[s.length()*2 + 1] = '#';
+    }
+ 
+    // longest palindromic substring
+    String longestPalindromicSubstring() {
+        int length = 0;   // length of longest palindromic substring
+        int center = 0;   // center of longest palindromic substring
+        for (int i = 1; i < p.length-1; i++) {
+            if (p[i] > length) {
+                length = p[i];
+                center = i;
+            }
+        }
+        return s.substring((center - 1 - length) / 2, (center - 1 + length) / 2);
+    }
+
+    // longest palindromic substring centered at index i/2
+    String longestPalindromicSubstring(int i) {
+        int length = p[i + 2];
+        int center = i + 2;
+        return s.substring((center - 1 - length) / 2, (center - 1 + length) / 2);
+    }
+   
+}
+ 
