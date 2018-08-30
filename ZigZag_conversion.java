@@ -147,3 +147,94 @@ class Solution {
         return res.toString();
     }
 }
+
+
+/*
+    Method 2: 
+    
+        Iterate through string from left to right, appending each character to the appropriate row. 
+        The appropriate row can be tracked using 2 variables: the current row and the current direction.
+        The current direction changes only when we moved up to the topmost row or moved down to the bottommost row.
+
+*/
+
+
+class Solution {
+    public String convert(String s, int numRows) {
+        
+        // trivial case
+        if (numRows == 1) return s;
+
+        // we store strings of each row separately in this arrayList
+        List<StringBuilder> rows = new ArrayList<>();
+        // the number of rows is minimum of numRows and the length of the string itself
+        int n = Math.min(numRows, s.length());
+        for (int i = 0; i < n; ++i)
+            rows.add(new StringBuilder());
+
+        // the two variables we will be needing
+        int curRow = 0;
+        boolean goingDown = false;
+
+        // append each character to the respective row 
+        char[] charArr = s.toCharArray();
+        for (char c : charArr) {
+            rows.get(curRow).append(c);
+            // if we hit either extremes like top and bottom, we change the direction
+            if (curRow == 0 || curRow == numRows - 1) goingDown = !goingDown;
+            // if going down, next row is curRow + 1, else next row is curRow - 1
+            if(goingDown) curRow += 1;
+            else curRow -= 1;
+        }
+
+        // append strings in each row into one final string
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < rows.size(); ++i) res.append(rows.get(i));
+        // return the final string
+        return res.toString();
+    }
+}
+
+
+/*
+    Method 3 :
+    
+        Visit all characters in row 0 first, then row 1, then row 2, and so on...
+        For all whole numbers k,
+
+        Characters in row 0 are located at indices : k*(2*numRows - 2)
+        Characters in row (numRows - 1) are located at indices : k*(2*numRows - 2) + numRows - 1
+        Characters in inner row i are located at indices : k*(2*numRows - 2) + i and (k + 1)*(2*numRows - 2) - i
+
+        Note that for all the three cases, k*(2*numRows - 2) + i is always there where i = row number
+        
+*/
+
+class Solution {
+    public String convert(String s, int numRows) {
+        
+        // trivial case
+        if (numRows == 1) return s;
+
+        StringBuilder res = new StringBuilder();
+        int n = s.length();
+        
+        // (2*numRows - 2) = 2*(numRows - 1) = (numRows - 1) << 1
+        int cycleLen = (numRows - 1) << 1;
+
+        for (int i = 0; i < numRows; i++) {
+            // j is basically equal to (k*(2*numRows - 2))
+            // note that we only append if the index is within the string bounds
+            for (int j = 0; j + i < n; j += cycleLen) {
+                // as mentioned, k*(2*numRows - 2) + i is common for all rows (this covers for i  = 0 and i = numRows - 1)
+                res.append(s.charAt(j + i));
+                // now we need to deal with the inner rows
+                if (i != 0 && i != numRows - 1 && j + cycleLen - i < n)
+                    // (k + 1) * (2*numRows - 2) - i = k*(2*numRows - 2) + (2*numRows - 2) - i
+                    res.append(s.charAt(j + cycleLen - i));
+            }
+        }
+        // return the final string
+        return res.toString();
+    }
+}
