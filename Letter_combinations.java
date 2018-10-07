@@ -107,3 +107,35 @@ class Solution {
     }
 }
 
+/*
+    Another solution based on BFS.
+    ans = {""} initiallly
+    digits = "23" say
+    for 2, we have "abc" thus : ans = {"a","b","c"}
+    for 3, we have "def" thus, remove 1st element which is 'a' and append it to all in {'d', 'e', 'f'}
+    thus we get : ans = {"b","c","ad","ae","af"}
+    next remove "b" and do the same.. we do it until the first element's length is not equal to the length of digits
+    ans = {"c","ad","ae","af","bd","be","bf"}
+    ans = {"ad","ae","af","bd","be","bf","cd","ce","cf"}
+    now when we see the length of the first element in ans i.e |"ad"| = |"23"| = 2 and thus we stop and return ans.
+    We could have used other data structures apart from LinkedList, but the BFS approach remains the same.
+*/
+
+class Solution {
+    public List<String> letterCombinations(String digits) {
+		LinkedList<String> ans = new LinkedList<String>();
+		if(digits.isEmpty()) return ans;
+		String[] mapping = new String[] {"0", "1", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+		ans.add("");
+		while(ans.peek().length()!=digits.length()){
+			String remove = ans.remove();
+			String map = mapping[digits.charAt(remove.length())-'0'];
+			for(char c: map.toCharArray()){
+				ans.addLast(remove+c);
+			}
+		}
+		return ans;
+	}
+}
+
+
