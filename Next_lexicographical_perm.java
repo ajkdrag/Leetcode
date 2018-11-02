@@ -1,6 +1,7 @@
 /*
   Problem at : https://leetcode.com/problems/next-permutation/
   Solution article at : https://leetcode.com/problems/next-permutation/solution/
+  Another good blog-post at : https://www.nayuki.io/page/next-lexicographical-permutation-algorithm
 */
 
 public class Solution {
