@@ -1,5 +1,8 @@
 /*
   Problem at : https://leetcode.com/problems/smallest-range-i/
+  Intuition:
+    If min(A) + K < max(A) - K, then return max(A) - min(A) - 2 * K
+    If min(A) + K >= max(A) - K, then return 0
 */
 
 class Solution {
