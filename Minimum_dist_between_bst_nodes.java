@@ -1,5 +1,6 @@
 /*
   Problem at : https://leetcode.com/problems/minimum-distance-between-bst-nodes/
+  Works for this problem as well : https://leetcode.com/problems/minimum-absolute-difference-in-bst/
 */
 
 class Solution {
