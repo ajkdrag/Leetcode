@@ -1,5 +1,5 @@
 /*
-  Problem at : 
+  Problem at : https://leetcode.com/problems/first-unique-character-in-a-string/
 */
 
 // Using a HashSet with two passes is the obvious solution. Here is a little different one
