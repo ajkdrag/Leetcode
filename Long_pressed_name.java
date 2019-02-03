@@ -10,9 +10,9 @@ class Solution {
             return false;
         int start1 = 0;
         int start2 = 0;
-        while(start1 < len1 && start2 < len2){
+        while(start2 < len2){
             if(name.charAt(start1) == typed.charAt(start2)){
-                ++start1;
+                start1 += start1 < len1 - 1 ? 1 : 0;
                 ++start2;
             }
             else if(typed.charAt(start2) == typed.charAt(start2 - 1))
@@ -20,9 +20,7 @@ class Solution {
             else
                 return false;
         }
-        if(start1 < len1)
-            return false;
-        return true;
+        return name.charAt(start1) == typed.charAt(len2 - 1);
     }
 }
 
