@@ -5,11 +5,9 @@
 class Solution {
     public int numPairsDivisibleBy60(int[] time) {
         int[] arr = new int[60];
-        int curr = -1;
         int len = time.length;
         for(int i = 0; i < len; ++i){
-            curr = (time[i])%60;
-            arr[curr]++;
+            arr[(time[i])%60]++;
         }
         int res = 0;
         int low = 1;
