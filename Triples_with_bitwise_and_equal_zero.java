@@ -62,3 +62,22 @@ class Solution {
     }
 }
 
+// dp solution
+// article at : https://leetcode.com/problems/triples-with-bitwise-and-equal-to-zero/discuss/226721/Java-DP-O(3-*-216-*-n)-time-O(216)-space
+
+class Solution {
+    public int countTriplets(int[] A) {
+        int N = 1 << 16, M = 3;
+        int[][] dp = new int[M + 1][N];
+        dp[0][N - 1] = 1;
+        for (int i = 0; i < M; i++) {
+            for (int k = 0; k < N; k++) {
+                for (int a : A) {
+                    dp[i + 1][k & a] += dp[i][k];
+                }
+            }
+        }
+        return dp[M][0];
+    }
+}
+
