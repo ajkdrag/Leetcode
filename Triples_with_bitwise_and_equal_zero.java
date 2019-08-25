@@ -2,6 +2,7 @@
   Problem at : https://leetcode.com/problems/triples-with-bitwise-and-equal-to-zero/
 */
 
+// inclusion - exclusion
 class Solution {
     int n = 16;
     public int countTriplets(int[] A) {
@@ -39,4 +40,25 @@ class Solution {
     }
 }
 
+// inclusion - exclusion (better implementation)
+class Solution {
+    public int countTriplets(int[] A) {
+        int ans = 0;
+        int N = A.length;
+        for(int k = 1; k < (1 << 16); k++) {
+            int count = 0;
+            for(int i = 0; i < N; i++) {
+                if((A[i] & k) == k) count++;
+            }
+            String s = Integer.toString(k, 2);
+            int c = 0;
+            for(int i = 0; i < s.length(); i++) {
+                if(s.charAt(i) == '1') c++;
+            }
+            if(c % 2 == 1) ans += count * count * count;
+            else ans -= count * count * count;
+        }
+        return N*N*N - ans;
+    }
+}
 
